@@ -1,0 +1,392 @@
+/* ============================================================
+   GLOBAL STYLES — global.css
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ── Base ── */
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  transition: background-color var(--dur-slow) var(--ease-out),
+              color var(--dur-normal) var(--ease-out);
+}
+
+/* ── Container ── */
+.container {
+  width: min(100%, var(--container));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* ── Section ── */
+.section {
+  padding-block: var(--section-pad);
+}
+
+/* ── Typography ── */
+.display-1 {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 7vw, 7rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.0;
+}
+
+.display-2 {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 5vw, 4.5rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+}
+
+.heading-1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3.5vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.heading-2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.body-lg {
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  line-height: 1.7;
+}
+
+.body-md {
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.body-sm {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: 0.8em;
+  letter-spacing: 0.03em;
+}
+
+/* ── Gradient Text ── */
+.gradient-text {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-animated {
+  background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 4s linear infinite;
+}
+
+/* ── Buttons ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 2.2rem;
+  border-radius: var(--radius-full);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all var(--dur-normal) var(--ease-spring);
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.1);
+  opacity: 0;
+  transition: opacity var(--dur-fast);
+}
+
+.btn:hover::before { opacity: 1; }
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+  box-shadow: 0 4px 24px rgba(var(--accent-rgb), 0.4);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 40px rgba(var(--accent-rgb), 0.55);
+}
+
+.btn-primary:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.btn-outline {
+  border: 1.5px solid var(--border-glow);
+  color: var(--text);
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+}
+
+.btn-outline:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(var(--accent-rgb), 0.2);
+}
+
+.btn-ghost {
+  color: var(--accent);
+  padding-inline: 0.5rem;
+  border-radius: var(--radius-sm);
+}
+
+.btn-ghost:hover {
+  background: rgba(var(--accent-rgb), 0.1);
+}
+
+/* Btn icon bounce */
+.btn svg, .btn .btn-icon {
+  transition: transform var(--dur-normal) var(--ease-spring);
+}
+
+.btn:hover svg, .btn:hover .btn-icon {
+  transform: translateX(4px);
+}
+
+/* ── Tags / Pills ── */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.9rem;
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: rgba(var(--accent-rgb), 0.12);
+  color: var(--accent);
+  border: 1px solid rgba(var(--accent-rgb), 0.2);
+}
+
+.tag-2 {
+  background: rgba(var(--accent2-rgb), 0.12);
+  color: var(--accent2);
+  border-color: rgba(var(--accent2-rgb), 0.2);
+}
+
+/* ── Cards ── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: transform var(--dur-normal) var(--ease-spring),
+              border-color var(--dur-normal),
+              box-shadow var(--dur-normal);
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  border-color: var(--border-glow);
+  box-shadow: var(--shadow-accent);
+}
+
+.glass-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: transform var(--dur-normal) var(--ease-spring),
+              border-color var(--dur-normal),
+              box-shadow var(--dur-normal);
+}
+
+.glass-card:hover {
+  border-color: rgba(var(--accent-rgb), 0.3);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+/* ── Section Label ── */
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.section-label::before {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 1.5px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+/* ── Divider ── */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  border: none;
+  margin-block: 2rem;
+}
+
+/* ── Glow orb backgrounds ── */
+.glow-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.glow-orb-1 {
+  width: 600px;
+  height: 600px;
+  background: var(--accent);
+  top: -200px;
+  left: -200px;
+}
+
+.glow-orb-2 {
+  width: 400px;
+  height: 400px;
+  background: var(--accent2);
+  bottom: -100px;
+  right: -100px;
+}
+
+/* ── Word wrap (GSAP text reveal) ── */
+.word-wrap {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.word {
+  display: inline-block;
+}
+
+/* ── Page transition overlay ── */
+#page-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+
+/* ── Custom Cursor ── */
+#cursor-dot,
+#cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  will-change: transform;
+  transition: opacity var(--dur-fast);
+}
+
+#cursor-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  margin-top: -4px;
+  margin-left: -4px;
+  box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.6);
+}
+
+#cursor-ring {
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid rgba(var(--accent-rgb), 0.6);
+  margin-top: -18px;
+  margin-left: -18px;
+  transition: width var(--dur-normal) var(--ease-spring),
+              height var(--dur-normal) var(--ease-spring),
+              margin var(--dur-normal) var(--ease-spring),
+              background var(--dur-normal),
+              opacity var(--dur-fast);
+}
+
+#cursor-dot.cursor--grow {
+  width: 14px;
+  height: 14px;
+  margin-top: -7px;
+  margin-left: -7px;
+}
+
+#cursor-ring.cursor--grow {
+  width: 56px;
+  height: 56px;
+  margin-top: -28px;
+  margin-left: -28px;
+  background: rgba(var(--accent-rgb), 0.08);
+  border-color: var(--accent);
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb {
+  background: var(--surface);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* ── Selection ── */
+::selection {
+  background: rgba(var(--accent-rgb), 0.3);
+  color: var(--text);
+}
+
+/* ── Focus ── */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ── Media queries ── */
+@media (max-width: 768px) {
+  .hide-mobile { display: none !important; }
+}
+@media (min-width: 769px) {
+  .hide-desktop { display: none !important; }
+}

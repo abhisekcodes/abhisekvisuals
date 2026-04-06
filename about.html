@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="About Abhisek — a Web & Motion Graphic Designer blending cinematic storytelling with digital craft." />
+  <title>About — Abhisek Visuals</title>
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/nav.css" />
+  <style>
+    .page-hero { padding-top:150px; padding-bottom:80px; position:relative; overflow:hidden; }
+    .page-hero__title { font-family:var(--font-display); font-size:clamp(2.8rem,6vw,5.5rem); font-weight:700; letter-spacing:-0.03em; line-height:1.05; margin-bottom:1.25rem; }
+    .page-hero__sub { color:var(--text-muted); max-width:520px; font-size:1.1rem; }
+
+    .about-intro { display:grid; grid-template-columns:1fr 1fr; gap:clamp(2rem,5vw,6rem); align-items:center; }
+    @media(max-width:768px){.about-intro{grid-template-columns:1fr;}}
+
+    .portrait-wrapper { position:relative; display:flex; justify-content:center; }
+    .portrait-img-wrap { position:relative; width:min(380px,100%); aspect-ratio:3/4; border-radius:var(--radius-xl); overflow:hidden; border:1px solid var(--border); box-shadow:var(--shadow-lg),var(--shadow-accent); transition:transform var(--dur-slow) var(--ease-spring),box-shadow var(--dur-slow); }
+    .portrait-img-wrap img { width:100%; height:100%; object-fit:cover; object-position:center top; transition:transform var(--dur-slow) var(--ease-out),filter var(--dur-normal); }
+    .portrait-img-wrap:hover { transform:translateY(-8px) scale(1.02); box-shadow:0 40px 80px rgba(108,99,255,0.4),0 0 0 2px rgba(108,99,255,0.3); }
+    .portrait-img-wrap:hover img { transform:scale(1.05); filter:brightness(1.05) saturate(1.1); }
+    .portrait-img-wrap::before { content:''; position:absolute; inset:0; background:linear-gradient(to bottom,transparent 55%,rgba(var(--accent-rgb),0.4) 100%); z-index:1; transition:opacity var(--dur-normal); }
+    .portrait-img-wrap:hover::before { opacity:0.8; }
+    /* Animated pulsing ring around portrait on hover */
+    .portrait-img-wrap::after { content:''; position:absolute; inset:-4px; border-radius:inherit; border:2px solid rgba(var(--accent-rgb),0); transition:border-color var(--dur-normal),box-shadow var(--dur-normal); pointer-events:none; z-index:2; border-radius:var(--radius-xl); }
+    .portrait-img-wrap:hover::after { border-color:rgba(var(--accent-rgb),0.5); box-shadow:0 0 30px rgba(var(--accent-rgb),0.3),inset 0 0 30px rgba(var(--accent-rgb),0.05); }
+
+    .portrait-badge { position:absolute; background:var(--card); border:1px solid var(--border); border-radius:var(--radius-md); padding:0.7rem 1rem; display:flex; align-items:center; gap:0.6rem; font-family:var(--font-display); font-size:0.85rem; font-weight:600; backdrop-filter:blur(12px); box-shadow:var(--shadow-md); z-index:2; white-space:nowrap; }
+    .portrait-badge--1 { top:10%; right:-24px; animation:float 7s ease-in-out infinite; }
+    .portrait-badge--2 { bottom:15%; left:-24px; animation:float 9s ease-in-out infinite; animation-delay:-3s; }
+    .portrait-badge__icon { width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,var(--accent),var(--accent2)); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:1rem; }
+    .portrait-blob { position:absolute; width:300px; height:300px; background:linear-gradient(135deg,var(--accent),var(--accent2)); filter:blur(80px); opacity:0.2; border-radius:50%; bottom:-60px; right:-60px; animation:blobMorph 12s ease-in-out infinite; }
+
+    .about-narrative .section-label { margin-bottom:.75rem; }
+    .about-narrative h2 { font-family:var(--font-display); font-size:clamp(1.8rem,3.5vw,2.8rem); font-weight:700; letter-spacing:-0.025em; line-height:1.15; margin-bottom:1.5rem; }
+    .about-narrative p { color:var(--text-muted); font-size:1rem; line-height:1.75; margin-bottom:1.25rem; }
+    .about-narrative p strong { color:var(--text); font-weight:600; }
+    .about-facts { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:2rem; }
+    .about-fact { background:var(--card); border:1px solid var(--border); border-radius:var(--radius-md); padding:1.25rem; transition:all var(--dur-normal) var(--ease-spring); }
+    .about-fact:hover { border-color:var(--border-glow); transform:translateY(-3px); }
+    .about-fact__label { font-family:var(--font-mono); font-size:0.7rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-dim); margin-bottom:0.3rem; }
+    .about-fact__value { font-family:var(--font-display); font-weight:600; font-size:1rem; }
+
+    .philosophy { background:var(--bg-alt); }
+    .philosophy-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; margin-top:3rem; }
+    @media(max-width:768px){.philosophy-grid{grid-template-columns:1fr;}}
+    .phil-card { padding:2.5rem; border-radius:var(--radius-lg); background:var(--glass-bg); border:1px solid var(--glass-border); backdrop-filter:blur(16px); transition:all var(--dur-normal) var(--ease-spring); text-align:center; }
+    .phil-card:hover { transform:translateY(-6px) rotate(-0.5deg); border-color:rgba(var(--accent-rgb),0.3); box-shadow:0 20px 60px rgba(0,0,0,0.3); }
+    .phil-icon { font-size:2.5rem; margin-bottom:1.25rem; display:block; }
+    .phil-card h3 { font-family:var(--font-display); font-size:1.1rem; font-weight:700; margin-bottom:0.75rem; }
+    .phil-card p { font-size:0.9rem; color:var(--text-muted); line-height:1.65; }
+
+    .timeline-track { position:relative; max-width:680px; margin-inline:auto; margin-top:4rem; }
+    .timeline-track::before { content:''; position:absolute; left:20px; top:0; bottom:0; width:2px; background:linear-gradient(to bottom,var(--accent),var(--accent2)); border-radius:2px; }
+    .tl-item { padding-left:62px; padding-bottom:3rem; position:relative; }
+    .tl-dot { position:absolute; left:12px; top:4px; width:18px; height:18px; border-radius:50%; background:var(--bg); border:2px solid var(--accent); z-index:1; transition:all var(--dur-normal) var(--ease-spring); }
+    .tl-item:hover .tl-dot { background:var(--accent); box-shadow:0 0 16px rgba(var(--accent-rgb),0.5); transform:scale(1.2); }
+    .tl-year { font-family:var(--font-mono); font-size:0.75rem; color:var(--accent); font-weight:500; letter-spacing:0.06em; margin-bottom:0.4rem; }
+    .tl-title { font-family:var(--font-display); font-size:1.1rem; font-weight:700; margin-bottom:0.4rem; }
+    .tl-desc { font-size:0.9rem; color:var(--text-muted); line-height:1.6; }
+
+    .about-cta { text-align:center; padding-block:var(--section-pad); }
+    .about-cta h2 { font-family:var(--font-display); font-size:clamp(2rem,4vw,3.5rem); font-weight:700; letter-spacing:-0.02em; margin-bottom:1rem; }
+    .about-cta p { color:var(--text-muted); margin-bottom:2.5rem; font-size:1.05rem; }
+    .about-cta__btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+  </style>
+  <script>(function(){var t=localStorage.getItem('av-theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');})();</script>
+</head>
+<body>
+  <div id="cursor-dot"></div><div id="cursor-ring"></div><div id="page-transition"></div>
+
+  <nav class="nav" id="main-nav"><div class="container"><div class="nav__inner">
+    <a href="index.html" class="nav__logo"><span class="nav__logo-dot"></span>Abhisek Visuals</a>
+    <ul class="nav__links"><li><a href="index.html" class="nav-link">Home</a></li><li><a href="about.html" class="nav-link">About</a></li><li><a href="skills.html" class="nav-link">Skills</a></li><li><a href="projects.html" class="nav-link">Projects</a></li><li><a href="contact.html" class="nav-link">Contact</a></li></ul>
+    <div class="nav__controls">
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme"><svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg><svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></button>
+      <a href="contact.html" class="nav__cta">Let's Talk</a>
+      <button class="hamburger" id="menu-toggle" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div></div></nav>
+  <div class="drawer-overlay" id="drawer-overlay"></div>
+  <nav class="mobile-drawer" id="mobile-drawer"><a href="index.html" class="nav-link">Home</a><a href="about.html" class="nav-link">About</a><a href="skills.html" class="nav-link">Skills</a><a href="projects.html" class="nav-link">Projects</a><a href="contact.html" class="nav-link">Contact</a><a href="contact.html" class="nav__cta">Let's Talk ↗</a></nav>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero section">
+    <div class="container">
+      <span class="section-label" data-reveal="fade">About Me</span>
+      <h1 class="page-hero__title" data-reveal="up">Designer. Storyteller.<br/><span class="gradient-text">World Builder.</span></h1>
+      <p class="page-hero__sub" data-reveal="up" data-delay="0.1">I blend visual design with motion to create experiences that don't just look good — they feel alive.</p>
+    </div>
+  </section>
+
+  <!-- INTRO -->
+  <section class="section">
+    <div class="container">
+      <div class="about-intro">
+        <div class="portrait-wrapper" data-reveal="left">
+          <div class="portrait-blob"></div>
+          <div class="portrait-img-wrap">
+            <img src="assets/images/portrait.png" alt="Abhisek — Web & Motion Designer" loading="lazy" />
+          </div>
+          <div class="portrait-badge portrait-badge--1"><div class="portrait-badge__icon">✦</div><span>2+ Years Experience</span></div>
+          <div class="portrait-badge portrait-badge--2"><div class="portrait-badge__icon">🎬</div><span>Motion & Web</span></div>
+        </div>
+        <div class="about-narrative" data-reveal="right">
+          <span class="section-label">My Story</span>
+          <h2>Turning imagination into <span class="gradient-text">digital reality.</span></h2>
+          <p>Hey — I'm <strong>Abhisek</strong>, a creative designer and motion artist based in India. My journey started with a fascination for how visuals communicate without words — how a single frame can stop someone mid-scroll.</p>
+          <p>Over two years I've collaborated with startups, agencies, and brands to craft <strong>digital experiences that convert and captivate</strong>. I work at the intersection of UI/UX design and motion graphics.</p>
+          <p>When I'm not pushing pixels or animating keyframes, you'll find me exploring cinematography, studying color science, or obsessing over micro-interactions.</p>
+          <div class="about-facts" data-stagger="0.08">
+            <div class="about-fact"><div class="about-fact__label">Based In</div><div class="about-fact__value">India 🇮🇳</div></div>
+            <div class="about-fact"><div class="about-fact__label">Availability</div><div class="about-fact__value" style="color:var(--accent)">● Open to Work</div></div>
+            <div class="about-fact"><div class="about-fact__label">Speciality</div><div class="about-fact__value">Web &amp; Motion</div></div>
+            <div class="about-fact"><div class="about-fact__label">Experience</div><div class="about-fact__value">2+ Years</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHILOSOPHY -->
+  <section class="section philosophy">
+    <div class="container">
+      <span class="section-label" data-reveal="fade">Creative Philosophy</span>
+      <h2 class="heading-1" style="margin-bottom:0;" data-reveal="up">What I believe in.</h2>
+      <div class="philosophy-grid" data-stagger="0.12">
+        <div class="phil-card"><span class="phil-icon">🎯</span><h3>Purposeful Design</h3><p>Every element earns its place. Design should solve problems first, then be beautiful. I don't add noise — I craft signal.</p></div>
+        <div class="phil-card"><span class="phil-icon">⚡</span><h3>Motion as Language</h3><p>Animation isn't decoration — it's communication. The right motion conveys hierarchy, guides attention, and tells a story in milliseconds.</p></div>
+        <div class="phil-card"><span class="phil-icon">🔮</span><h3>Future-Forward</h3><p>I stay obsessively curious. I'm always experimenting with emerging tools and techniques — three steps ahead of the trend.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIMELINE -->
+  <section class="section">
+    <div class="container">
+      <span class="section-label" data-reveal="fade">My Journey</span>
+      <h2 class="heading-1" style="margin-bottom:0;" data-reveal="up">Key Milestones.</h2>
+      <div class="timeline-track">
+        <div class="tl-item" data-reveal="left"><div class="tl-dot"></div><div class="tl-year">2019</div><div class="tl-title">First Spark</div><p class="tl-desc">Started freelancing — logo design and social media graphics. Built from zero, landing my first paid client in week two.</p></div>
+        <div class="tl-item" data-reveal="left" data-delay="0.1"><div class="tl-dot"></div><div class="tl-year">2020</div><div class="tl-title">Into Motion</div><p class="tl-desc">Discovered After Effects late at night — stayed up for 3 days straight. Fell headfirst into motion graphics, never looked back.</p></div>
+        <div class="tl-item" data-reveal="left" data-delay="0.2"><div class="tl-dot"></div><div class="tl-year">2021</div><div class="tl-title">Web Design Era</div><p class="tl-desc">Added UI/UX to my toolkit. Figured out Figma, Webflow, and CSS animation — bridging the gap between static design and living code.</p></div>
+        <div class="tl-item" data-reveal="left" data-delay="0.3"><div class="tl-dot"></div><div class="tl-year">2022–23</div><div class="tl-title">Studio Growth</div><p class="tl-desc">Worked with 15+ brands across India, UAE, and the US — producing brand identities, explainer videos, and full website builds.</p></div>
+        <div class="tl-item" data-reveal="left" data-delay="0.4"><div class="tl-dot" style="border-color:var(--accent2);background:var(--accent2);"></div><div class="tl-year" style="color:var(--accent2);">2024 → Now</div><div class="tl-title">Abhisek Visuals</div><p class="tl-desc">Launched my personal studio — combining everything I know into a full-service creative powerhouse for ambitious brands.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="about-cta">
+    <div class="container" data-reveal="scale">
+      <h2>Let's build something <span class="gradient-text">extraordinary.</span></h2>
+      <p>Open to freelance projects, collaborations, and full-time opportunities.</p>
+      <div class="about-cta__btns">
+        <a href="contact.html" class="btn btn-primary">Start a Conversation <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a href="projects.html" class="btn btn-outline">View My Work</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer"><div class="container"><div class="footer__inner">
+    <div class="footer__left"><strong>Abhisek Visuals</strong><br/><span>© 2025 All rights reserved.</span></div>
+    <div class="footer__socials">
+      <a href="https://linkedin.com" class="footer__social-link" aria-label="LinkedIn" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+      <a href="https://facebook.com" class="footer__social-link" aria-label="Facebook" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+      <a href="https://instagram.com" class="footer__social-link" aria-label="Instagram" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+      <a href="https://youtube.com" class="footer__social-link" aria-label="YouTube" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.41 19c1.71.46 8.59.46 8.59.46s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon fill="white" points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg></a>
+    </div>
+  </div></div></footer>
+  <button class="back-to-top" id="back-to-top" aria-label="Back to top"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <script src="js/theme.js"></script><script src="js/nav.js"></script><script src="js/cursor.js"></script><script src="js/animations.js"></script>
+  <script>const btt=document.getElementById('back-to-top');window.addEventListener('scroll',()=>btt.classList.toggle('visible',window.scrollY>400),{passive:true});btt.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));</script>
+</body>
+</html>

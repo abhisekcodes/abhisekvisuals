@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Abhisek Visuals — Web & Motion Graphic Designer crafting cinematic digital experiences through code and motion." />
+  <title>Abhisek Visuals — Web & Motion Design</title>
+  <!-- Preload critical fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/nav.css" />
+  <link rel="stylesheet" href="css/hero.css" />
+  <style>
+    /* ── Featured Projects (Home) ── */
+    .featured { position: relative; overflow: hidden; }
+    .featured__heading { margin-bottom: 3rem; }
+    .featured__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+    .featured-card {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      aspect-ratio: 16/10;
+      cursor: pointer;
+      background: var(--card);
+    }
+    .featured-card img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform var(--dur-slow) var(--ease-out);
+    }
+    .featured-card:hover img { transform: scale(1.06); }
+    .featured-card__overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%);
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      transition: background var(--dur-normal);
+    }
+    .featured-card:hover .featured-card__overlay {
+      background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(var(--accent-rgb),0.15) 100%);
+    }
+    .featured-card__title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.4rem;
+    }
+    .featured-card__tag { margin-bottom: 0; }
+    .featured-card__arrow {
+      position: absolute;
+      top: 1.25rem; right: 1.25rem;
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all var(--dur-normal) var(--ease-spring);
+    }
+    .featured-card:hover .featured-card__arrow {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* ── What I Do ── */
+    .what-i-do { background: var(--bg-alt); }
+    .wid-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    @media (max-width: 640px) { .wid-grid { grid-template-columns: 1fr; } }
+    .wid-card {
+      padding: 2.5rem;
+      border-radius: var(--radius-lg);
+      background: var(--card);
+      border: 1px solid var(--border);
+      transition: all var(--dur-normal) var(--ease-spring);
+      position: relative;
+      overflow: hidden;
+    }
+    .wid-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(var(--accent-rgb),0.06), transparent);
+      opacity: 0;
+      transition: opacity var(--dur-normal);
+    }
+    .wid-card:hover { transform: translateY(-6px); border-color: var(--border-glow); }
+    .wid-card:hover::before { opacity: 1; }
+    .wid-card--motion::before {
+      background: linear-gradient(135deg, rgba(var(--accent2-rgb),0.06), transparent);
+    }
+    .wid-icon {
+      width: 56px; height: 56px;
+      border-radius: var(--radius-md);
+      background: rgba(var(--accent-rgb),0.12);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.5rem;
+      transition: transform var(--dur-normal) var(--ease-spring);
+    }
+    .wid-card--motion .wid-icon {
+      background: rgba(var(--accent2-rgb),0.12);
+    }
+    .wid-card:hover .wid-icon { transform: scale(1.1) rotate(-5deg); }
+    .wid-title {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .wid-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+    }
+    .wid-list .tag { font-size: 0.72rem; }
+
+    /* ── Stats ── */
+    .stats { position: relative; overflow: hidden; }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    @media (max-width: 640px) { .stats-grid { grid-template-columns: 1fr 1fr; } }
+    .stat-item {
+      background: var(--card);
+      padding: 3rem 2rem;
+      text-align: center;
+      transition: background var(--dur-fast);
+    }
+    .stat-item:hover { background: var(--card-hover); }
+    .stat-number {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      font-weight: 700;
+      line-height: 1;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* ── CTA Banner ── */
+    .cta-banner {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+      border-radius: var(--radius-xl);
+      padding: 5rem var(--gutter);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='m36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .cta-banner h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    .cta-banner p {
+      color: rgba(255,255,255,0.8);
+      font-size: 1.1rem;
+      margin-bottom: 2.5rem;
+      position: relative;
+    }
+    .cta-banner .btn-outline {
+      border-color: rgba(255,255,255,0.5);
+      color: #fff;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(8px);
+    }
+    .cta-banner .btn-outline:hover {
+      border-color: rgba(255,255,255,0.9);
+      color: #fff;
+    }
+
+    /* ── Featured grid responsive ── */
+    @media (max-width: 768px) {
+      .featured__grid { grid-template-columns: 1fr; }
+    }
+  </style>
+  <!-- Apply theme before paint -->
+  <script>
+    (function(){var t=localStorage.getItem('av-theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');})();
+  </script>
+</head>
+<body>
+
+  <!-- Custom Cursor -->
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+
+  <!-- Page Transition -->
+  <div id="page-transition"></div>
+
+  <!-- ═══════════════════════════════ NAVIGATION ═══════════════════════════════ -->
+  <nav class="nav" id="main-nav" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <div class="nav__inner">
+        <a href="index.html" class="nav__logo">
+          <span class="nav__logo-dot"></span>
+          Abhisek Visuals
+        </a>
+        <ul class="nav__links" role="list">
+          <li><a href="index.html"    class="nav-link">Home</a></li>
+          <li><a href="about.html"    class="nav-link">About</a></li>
+          <li><a href="skills.html"   class="nav-link">Skills</a></li>
+          <li><a href="projects.html" class="nav-link">Projects</a></li>
+          <li><a href="contact.html"  class="nav-link">Contact</a></li>
+        </ul>
+        <div class="nav__controls">
+          <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+            <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+            <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+          </button>
+          <a href="contact.html" class="nav__cta">Let's Talk</a>
+          <button class="hamburger" id="menu-toggle" aria-label="Open menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Drawer -->
+  <div class="drawer-overlay" id="drawer-overlay"></div>
+  <nav class="mobile-drawer" id="mobile-drawer" aria-label="Mobile navigation">
+    <a href="index.html"    class="nav-link">Home</a>
+    <a href="about.html"    class="nav-link">About</a>
+    <a href="skills.html"   class="nav-link">Skills</a>
+    <a href="projects.html" class="nav-link">Projects</a>
+    <a href="contact.html"  class="nav-link">Contact</a>
+    <a href="contact.html"  class="nav__cta">Let's Talk ↗</a>
+  </nav>
+
+  <!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+  <section class="hero" id="hero">
+    <!-- Background -->
+    <div class="hero__bg">
+      <img src="assets/images/hero_bg.png" alt="" aria-hidden="true" class="hero__bg-img" />
+      <div class="hero__canvas-overlay" id="hero-canvas-wrap">
+        <canvas id="hero-canvas"></canvas>
+      </div>
+      <div class="hero__overlay"></div>
+    </div>
+
+    <!-- Floating orbs -->
+    <div class="hero__orb hero__orb--1"></div>
+    <div class="hero__orb hero__orb--2"></div>
+    <div class="hero__orb hero__orb--3"></div>
+
+    <div class="container">
+      <div class="hero__content">
+        <!-- Label -->
+        <div class="hero__eyebrow" data-reveal="fade">
+          <span class="tag">✦ Web &amp; Motion Design</span>
+        </div>
+
+        <!-- Headline -->
+        <h1 class="hero__headline" data-reveal="up" data-delay="0.1">
+          <span class="hero__line">Crafting Digital</span>
+          <span class="hero__line gradient-text-animated">Experiences</span>
+          <span class="hero__line">Through Motion.</span>
+        </h1>
+
+        <!-- Sub -->
+        <p class="hero__sub body-lg" data-reveal="up" data-delay="0.2">
+          I'm <strong>Abhisek</strong> — a designer &amp; motion artist turning ideas into
+          cinematic visual stories. From pixel-perfect interfaces to jaw-dropping animations.
+        </p>
+
+        <!-- CTAs -->
+        <div class="hero__ctas" data-reveal="up" data-delay="0.3">
+          <a href="projects.html" id="cta-projects" class="btn btn-primary">
+            View My Work
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <button class="btn btn-outline" id="btn-showreel">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            Play Showreel
+          </button>
+        </div>
+
+        <!-- Scroll indicator -->
+        <div class="hero__scroll" data-reveal="fade" data-delay="0.6">
+          <span>Scroll</span>
+          <div class="hero__scroll-line"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating labels -->
+    <div class="hero__floating-tags">
+      <span class="hero__ftag hero__ftag--1">UI / UX</span>
+      <span class="hero__ftag hero__ftag--2">After Effects</span>
+      <span class="hero__ftag hero__ftag--3">Motion</span>
+      <span class="hero__ftag hero__ftag--4">Figma</span>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════ FEATURED ═══════════════════════════════ -->
+  <section class="section featured" id="featured">
+    <div class="container">
+      <div class="featured__heading">
+        <p class="section-label" data-reveal="fade">Featured Work</p>
+        <h2 class="heading-1" data-reveal="up">Selected Projects</h2>
+      </div>
+      <div class="featured__grid" data-stagger="0.12">
+        <!-- Card 1 -->
+        <a href="projects.html" class="featured-card">
+          <img src="assets/images/project_aurora.png" alt="Aurora Travel — Web Design" loading="lazy" />
+          <div class="featured-card__overlay">
+            <span class="tag featured-card__tag">Web Design</span>
+            <p class="featured-card__title">Aurora Travel</p>
+          </div>
+          <div class="featured-card__arrow">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+        </a>
+        <!-- Card 2 -->
+        <a href="projects.html" class="featured-card">
+          <img src="assets/images/project_lumina.png" alt="Lumina — Brand Identity Motion" loading="lazy" />
+          <div class="featured-card__overlay">
+            <span class="tag tag-2 featured-card__tag">Motion Graphics</span>
+            <p class="featured-card__title">Lumina Brand Film</p>
+          </div>
+          <div class="featured-card__arrow">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+        </a>
+        <!-- Card 3 -->
+        <a href="projects.html" class="featured-card">
+          <img src="assets/images/project_velox.png" alt="VeloX — Sports App UI" loading="lazy" />
+          <div class="featured-card__overlay">
+            <span class="tag featured-card__tag">Web Design</span>
+            <p class="featured-card__title">VeloX Sports App</p>
+          </div>
+          <div class="featured-card__arrow">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+        </a>
+      </div>
+      <div style="text-align:center; margin-top:3rem;" data-reveal="up">
+        <a href="projects.html" class="btn btn-outline">View All Projects</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════ WHAT I DO ═══════════════════════════════ -->
+  <section class="section what-i-do" id="what-i-do">
+    <div class="container">
+      <p class="section-label" data-reveal="fade">What I Do</p>
+      <h2 class="heading-1" style="margin-bottom:3rem;" data-reveal="up">Two disciplines.<br/>One vision.</h2>
+      <div class="wid-grid" data-stagger="0.15">
+        <div class="wid-card">
+          <div class="wid-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          </div>
+          <h3 class="wid-title">Web Design</h3>
+          <p class="body-md" style="color: var(--text-muted);">
+            Building stunning, responsive interfaces that blend aesthetic beauty with seamless usability. From wireframes to pixel-perfect code — every screen tells a story.
+          </p>
+          <div class="wid-list">
+            <span class="tag">UI / UX</span>
+            <span class="tag">Figma</span>
+            <span class="tag">WordPress</span>
+            <span class="tag">HTML / CSS</span>
+            <span class="tag">GSAP</span>
+            <span class="tag">AI Web Design</span>
+            <span class="tag">VS Code</span>
+            <span class="tag">Antigravity</span>
+            <span class="tag">Claude Code</span>
+          </div>
+        </div>
+        <div class="wid-card wid-card--motion">
+          <div class="wid-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="1.8" stroke-linecap="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+          </div>
+          <h3 class="wid-title">Motion Graphics</h3>
+          <p class="body-md" style="color: var(--text-muted);">
+            Crafting dynamic visual narratives through animation. Brand reels, product explainers, title sequences — designed to captivate and communicate in seconds.
+          </p>
+          <div class="wid-list">
+            <span class="tag tag-2">After Effects</span>
+            <span class="tag tag-2">Premiere Pro</span>
+            <span class="tag tag-2">Cinema 4D</span>
+            <span class="tag tag-2">Photoshop</span>
+            <span class="tag tag-2">Illustrator</span>
+            <span class="tag tag-2">AI Creator</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════ STATS ═══════════════════════════════ -->
+  <section class="section stats" id="stats">
+    <div class="container">
+      <div class="stats-grid" data-stagger="0.08">
+        <div class="stat-item">
+          <div class="stat-number" data-count="100" data-suffix="+">0+</div>
+          <div class="stat-label">Projects Completed</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-count="50" data-suffix="+">0+</div>
+          <div class="stat-label">Happy Clients</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-count="2" data-suffix="+">0+</div>
+          <div class="stat-label">Years Experience</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-count="12" data-suffix="">0</div>
+          <div class="stat-label">Tools Mastered</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════ CTA BANNER ═══════════════════════════════ -->
+  <section class="section">
+    <div class="container">
+      <div class="cta-banner" data-reveal="scale">
+        <h2>Ready to make something amazing?</h2>
+        <p>Let's collaborate and bring your vision to life.</p>
+        <a href="contact.html" class="btn btn-outline">Start a Project ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════ FOOTER ═══════════════════════════════ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__inner">
+        <div class="footer__left">
+          <strong>Abhisek Visuals</strong>
+          <br />
+          <span>© 2025 All rights reserved.</span>
+        </div>
+        <div class="footer__socials">
+          <a href="https://linkedin.com" class="footer__social-link" aria-label="LinkedIn" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="https://facebook.com" class="footer__social-link" aria-label="Facebook" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="https://instagram.com" class="footer__social-link" aria-label="Instagram" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="https://youtube.com" class="footer__social-link" aria-label="YouTube" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.41 19c1.71.46 8.59.46 8.59.46s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon fill="white" points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to top -->
+  <button class="back-to-top" id="back-to-top" aria-label="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
+
+  <!-- Showreel Modal -->
+  <div id="showreel-modal" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.96);backdrop-filter:blur(16px);align-items:center;justify-content:center;flex-direction:column;">
+    <div style="position:relative;width:min(960px,92vw);aspect-ratio:16/9;border-radius:var(--radius-lg);overflow:hidden;box-shadow:0 40px 120px rgba(108,99,255,0.4),0 0 0 1px rgba(108,99,255,0.2);">
+      <canvas id="showreel-canvas" style="width:100%;height:100%;display:block;"></canvas>
+      <!-- Overlay text -->
+      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;pointer-events:none;">
+        <div id="sr-title" style="font-family:var(--font-display);font-size:clamp(2rem,5vw,4rem);font-weight:800;color:#fff;letter-spacing:-0.03em;text-shadow:0 0 40px rgba(108,99,255,0.8);opacity:0;transition:opacity 0.8s;text-align:center;"></div>
+        <div id="sr-sub" style="font-family:var(--font-mono);font-size:0.85rem;color:rgba(255,255,255,0.5);letter-spacing:0.12em;text-transform:uppercase;opacity:0;transition:opacity 0.8s;"></div>
+      </div>
+    </div>
+    <p style="margin-top:1.5rem;font-family:var(--font-mono);font-size:0.75rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;">Abhisek Visuals — Motion Showreel 2025</p>
+    <button onclick="closeShowreel()" style="position:fixed;top:2rem;right:2rem;color:#fff;font-size:1.2rem;cursor:pointer;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all 0.2s;backdrop-filter:blur(8px);">✕</button>
+  </div>
+
+  <!-- ═══ SCRIPTS ═══ -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/cursor.js"></script>
+  <script src="js/animations.js"></script>
+  <script>
+    // Hero canvas particle effect
+    (function() {
+      const canvas = document.getElementById('hero-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let W, H, particles = [];
+
+      const resize = () => {
+        W = canvas.width  = canvas.offsetWidth;
+        H = canvas.height = canvas.offsetHeight;
+      };
+      window.addEventListener('resize', resize);
+      resize();
+
+      const COLORS = ['108,99,255', '255,101,132', '80,200,255'];
+
+      for (let i = 0; i < 80; i++) {
+        particles.push({
+          x: Math.random() * 100,
+          y: Math.random() * 100,
+          r: Math.random() * 2 + 0.5,
+          vx: (Math.random() - 0.5) * 0.015,
+          vy: (Math.random() - 0.5) * 0.015,
+          c: COLORS[Math.floor(Math.random() * COLORS.length)],
+          a: Math.random() * 0.5 + 0.1,
+        });
+      }
+
+      const draw = () => {
+        ctx.clearRect(0, 0, W, H);
+        particles.forEach(p => {
+          p.x += p.vx; p.y += p.vy;
+          if (p.x < 0) p.x = 100;
+          if (p.x > 100) p.x = 0;
+          if (p.y < 0) p.y = 100;
+          if (p.y > 100) p.y = 0;
+          ctx.beginPath();
+          ctx.arc(p.x/100*W, p.y/100*H, p.r, 0, Math.PI*2);
+          ctx.fillStyle = `rgba(${p.c},${p.a})`;
+          ctx.fill();
+        });
+        requestAnimationFrame(draw);
+      };
+      draw();
+    })();
+
+    // ── Showreel animated canvas ──
+    let srRaf, srParticles = [], srShapes = [], srTime = 0;
+    const reelSlides = [
+      { title: 'MOTION DESIGN', sub: 'Bringing Ideas to Life' },
+      { title: 'WEB DESIGN', sub: 'Pixel-Perfect Interfaces' },
+      { title: 'BRAND IDENTITY', sub: 'Visual Stories That Connect' },
+      { title: 'ABHISEK VISUALS', sub: 'Creative Studio · 2025' },
+    ];
+    let slideIdx = 0, slideTimer;
+
+    function openShowreel() {
+      const modal = document.getElementById('showreel-modal');
+      modal.style.display = 'flex';
+      const canvas = document.getElementById('showreel-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+      const W = canvas.width, H = canvas.height;
+
+      srParticles = Array.from({length:120},()=>({
+        x:Math.random()*W, y:Math.random()*H,
+        vx:(Math.random()-.5)*1.2, vy:(Math.random()-.5)*1.2,
+        r:Math.random()*2+0.5,
+        c:[['108,99,255','255,101,132','80,200,255'][Math.floor(Math.random()*3)]],
+        a:Math.random()*0.6+0.1
+      }));
+      srShapes = Array.from({length:8},(_,i)=>({
+        x:Math.random()*W, y:Math.random()*H,
+        r:30+Math.random()*80,
+        speed:0.005+Math.random()*0.01,
+        phase:Math.random()*Math.PI*2,
+        c:[['108,99,255','255,101,132','80,200,255'][i%3]],
+        rot:0, rotSpeed:(Math.random()-.5)*0.02
+      }));
+      srTime = 0;
+
+      const showSlide = (i) => {
+        const t = document.getElementById('sr-title');
+        const s = document.getElementById('sr-sub');
+        t.style.opacity='0'; s.style.opacity='0';
+        setTimeout(()=>{ t.textContent=reelSlides[i].title; s.textContent=reelSlides[i].sub; t.style.opacity='1'; s.style.opacity='1'; },300);
+      };
+      showSlide(0);
+      slideTimer = setInterval(()=>{ slideIdx=(slideIdx+1)%reelSlides.length; showSlide(slideIdx); }, 2800);
+
+      const drawSR = () => {
+        srTime += 0.016;
+        ctx.fillStyle = 'rgba(4,4,12,0.18)';
+        ctx.fillRect(0,0,W,H);
+
+        // Draw glowing shapes
+        srShapes.forEach(s=>{
+          s.x += Math.sin(srTime*s.speed+s.phase)*0.8;
+          s.y += Math.cos(srTime*s.speed+s.phase)*0.6;
+          s.rot += s.rotSpeed;
+          if(s.x<-s.r)s.x=W+s.r; if(s.x>W+s.r)s.x=-s.r;
+          if(s.y<-s.r)s.y=H+s.r; if(s.y>H+s.r)s.y=-s.r;
+          const g = ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r);
+          g.addColorStop(0,`rgba(${s.c},0.55)`);
+          g.addColorStop(1,`rgba(${s.c},0)`);
+          ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+          ctx.fillStyle=g; ctx.fill();
+        });
+
+        // Particles
+        srParticles.forEach(p=>{
+          p.x+=p.vx; p.y+=p.vy;
+          if(p.x<0)p.x=W; if(p.x>W)p.x=0;
+          if(p.y<0)p.y=H; if(p.y>H)p.y=0;
+          ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+          ctx.fillStyle=`rgba(${p.c},${p.a})`; ctx.fill();
+        });
+
+        // Scan line
+        const scanY = ((srTime*60)%H);
+        const scanGrad = ctx.createLinearGradient(0,scanY-4,0,scanY+4);
+        scanGrad.addColorStop(0,'transparent');
+        scanGrad.addColorStop(0.5,'rgba(108,99,255,0.3)');
+        scanGrad.addColorStop(1,'transparent');
+        ctx.fillStyle=scanGrad; ctx.fillRect(0,scanY-4,W,8);
+
+        srRaf = requestAnimationFrame(drawSR);
+      };
+      drawSR();
+    }
+
+    window.closeShowreel = function() {
+      document.getElementById('showreel-modal').style.display='none';
+      cancelAnimationFrame(srRaf);
+      clearInterval(slideTimer);
+      slideIdx=0;
+    };
+
+    document.getElementById('btn-showreel')?.addEventListener('click', openShowreel);
+    document.getElementById('showreel-modal')?.addEventListener('click',(e)=>{
+      if(e.target===document.getElementById('showreel-modal')) closeShowreel();
+    });
+
+    // Back to top
+    const btt = document.getElementById('back-to-top');
+    window.addEventListener('scroll', () => {
+      btt.classList.toggle('visible', window.scrollY > 400);
+    }, { passive: true });
+    btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  </script>
+</body>
+</html>

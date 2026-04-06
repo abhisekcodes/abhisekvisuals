@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Skills — Abhisek Visuals. Interactive showcase of web design and motion graphics tools and expertise." />
+  <title>Skills — Abhisek Visuals</title>
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/nav.css" />
+  <style>
+    .page-hero{padding-top:150px;padding-bottom:60px;position:relative;overflow:hidden;}
+    .page-hero__title{font-family:var(--font-display);font-size:clamp(2.8rem,6vw,5.5rem);font-weight:700;letter-spacing:-0.03em;line-height:1.05;margin-bottom:1.25rem;}
+    .page-hero__sub{color:var(--text-muted);max-width:520px;font-size:1.1rem;}
+
+    /* Tab switcher */
+    .skills-tabs { background:var(--bg-alt); position:sticky; top:80px; z-index:100; }
+    .tabs-inner { display:flex; gap:0.5rem; padding-block:1.5rem; overflow-x:auto; }
+    .tab-btn { padding:0.65rem 1.8rem; border-radius:var(--radius-full); font-family:var(--font-display); font-weight:600; font-size:0.9rem; color:var(--text-muted); background:transparent; border:1.5px solid transparent; transition:all var(--dur-normal) var(--ease-spring); white-space:nowrap; }
+    .tab-btn:hover { color:var(--text); background:rgba(var(--accent-rgb),0.08); }
+    .tab-btn.active { color:#fff; background:linear-gradient(135deg,var(--accent),var(--accent2)); border-color:transparent; box-shadow:0 4px 20px rgba(var(--accent-rgb),0.35); }
+
+    /* Skills grid */
+    .skills-panel { display:none; }
+    .skills-panel.active { display:block; }
+    .skills-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:1.5rem; margin-top:3rem; }
+
+    /* Skill card */
+    .skill-card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:2rem; position:relative; overflow:hidden; transition:all var(--dur-normal) var(--ease-spring); cursor:default; }
+    .skill-card::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(var(--accent-rgb),0.06),transparent); opacity:0; transition:opacity var(--dur-normal); }
+    .skill-card--motion::before { background:linear-gradient(135deg,rgba(var(--accent2-rgb),0.08),transparent); }
+    .skill-card:hover { transform:translateY(-8px) scale(1.01); border-color:var(--border-glow); box-shadow:var(--shadow-accent); }
+    .skill-card:hover::before { opacity:1; }
+    .skill-card--motion:hover { border-color:rgba(var(--accent2-rgb),0.4); box-shadow:0 0 40px rgba(var(--accent2-rgb),0.2); }
+
+    .skill-icon { width:52px; height:52px; border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; margin-bottom:1.25rem; font-size:1.6rem; transition:transform var(--dur-normal) var(--ease-spring); background:rgba(var(--accent-rgb),0.1); }
+    .skill-card--motion .skill-icon { background:rgba(var(--accent2-rgb),0.1); }
+    .skill-card:hover .skill-icon { transform:scale(1.15) rotate(-5deg); animation:float 0.6s ease-in-out; }
+
+    .skill-name { font-family:var(--font-display); font-weight:700; font-size:1.05rem; margin-bottom:0.4rem; }
+    .skill-category { font-family:var(--font-mono); font-size:0.7rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-dim); margin-bottom:1.2rem; }
+
+    /* Progress bar */
+    .skill-bar { position:relative; height:4px; background:rgba(255,255,255,0.06); border-radius:2px; overflow:hidden; margin-bottom:0.5rem; }
+    .skill-bar__fill { height:100%; border-radius:2px; width:0; background:linear-gradient(90deg,var(--accent),var(--accent2)); transition:width 1.2s var(--ease-out); }
+    .skill-card--motion .skill-bar__fill { background:linear-gradient(90deg,var(--accent2),#ff9a5c); }
+    .skill-bar__label { display:flex; justify-content:space-between; font-size:0.75rem; color:var(--text-dim); font-family:var(--font-mono); }
+
+    /* Featured large cards */
+    .skill-card--featured { grid-column:span 2; }
+    @media(max-width:640px){.skill-card--featured{grid-column:span 1;}}
+    .skill-card--featured .skill-name { font-size:1.2rem; }
+
+    /* Tool tags inside card */
+    .skill-tools { display:flex; flex-wrap:wrap; gap:0.4rem; margin-top:1rem; }
+    .skill-tool { font-family:var(--font-mono); font-size:0.7rem; padding:0.25rem 0.65rem; border-radius:var(--radius-full); background:rgba(var(--accent-rgb),0.1); color:var(--accent); border:1px solid rgba(var(--accent-rgb),0.15); }
+    .skill-card--motion .skill-tool { background:rgba(var(--accent2-rgb),0.1); color:var(--accent2); border-color:rgba(var(--accent2-rgb),0.15); }
+
+    /* Expertise row */
+    .expertise { background:var(--bg-alt); }
+    .expertise-list { display:flex; flex-direction:column; gap:1.25rem; margin-top:3rem; }
+    .exp-item { display:grid; grid-template-columns:200px 1fr auto; gap:1.5rem; align-items:center; padding:1.5rem 2rem; background:var(--card); border:1px solid var(--border); border-radius:var(--radius-md); transition:all var(--dur-normal) var(--ease-spring); }
+    @media(max-width:640px){.exp-item{grid-template-columns:1fr;gap:0.75rem;}}
+    .exp-item:hover { border-color:var(--border-glow); transform:translateX(8px); }
+    .exp-name { font-family:var(--font-display); font-weight:600; font-size:0.95rem; }
+    .exp-bar-wrap { height:6px; background:rgba(255,255,255,0.06); border-radius:3px; overflow:hidden; }
+    .exp-bar { height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2)); border-radius:3px; width:0; }
+    .exp-pct { font-family:var(--font-mono); font-size:0.8rem; color:var(--accent); font-weight:600; min-width:36px; text-align:right; }
+  </style>
+  <script>(function(){var t=localStorage.getItem('av-theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');})();</script>
+</head>
+<body>
+  <div id="cursor-dot"></div><div id="cursor-ring"></div><div id="page-transition"></div>
+
+  <nav class="nav" id="main-nav"><div class="container"><div class="nav__inner">
+    <a href="index.html" class="nav__logo"><span class="nav__logo-dot"></span>Abhisek Visuals</a>
+    <ul class="nav__links"><li><a href="index.html" class="nav-link">Home</a></li><li><a href="about.html" class="nav-link">About</a></li><li><a href="skills.html" class="nav-link">Skills</a></li><li><a href="projects.html" class="nav-link">Projects</a></li><li><a href="contact.html" class="nav-link">Contact</a></li></ul>
+    <div class="nav__controls">
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme"><svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg><svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></button>
+      <a href="contact.html" class="nav__cta">Let's Talk</a>
+      <button class="hamburger" id="menu-toggle" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div></div></nav>
+  <div class="drawer-overlay" id="drawer-overlay"></div>
+  <nav class="mobile-drawer" id="mobile-drawer"><a href="index.html" class="nav-link">Home</a><a href="about.html" class="nav-link">About</a><a href="skills.html" class="nav-link">Skills</a><a href="projects.html" class="nav-link">Projects</a><a href="contact.html" class="nav-link">Contact</a><a href="contact.html" class="nav__cta">Let's Talk ↗</a></nav>
+
+  <section class="page-hero section">
+    <div class="container">
+      <span class="section-label" data-reveal="fade">My Toolkit</span>
+      <h1 class="page-hero__title" data-reveal="up">Skills &amp; <span class="gradient-text">Expertise.</span></h1>
+      <p class="page-hero__sub" data-reveal="up" data-delay="0.1">A carefully curated toolkit built over years of real-world projects. I don't just know these tools — I master them.</p>
+    </div>
+  </section>
+
+  <!-- TABS -->
+  <div class="skills-tabs">
+    <div class="container">
+      <div class="tabs-inner" role="tablist">
+        <button class="tab-btn active" role="tab" aria-selected="true" data-tab="web" id="tab-web">Web Design</button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="motion" id="tab-motion">Motion Graphics</button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="all" id="tab-all">All Skills</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SKILLS CONTENT -->
+  <section class="section">
+    <div class="container">
+
+      <!-- WEB PANEL -->
+      <div class="skills-panel active" id="panel-web" role="tabpanel">
+        <div class="skills-grid" data-stagger="0.07">
+          <div class="skill-card skill-card--featured">
+            <div class="skill-icon">🎨</div>
+            <div class="skill-name">UI / UX Design</div>
+            <div class="skill-category">Core Discipline</div>
+            <div class="skill-bar"><div class="skill-bar__fill" data-progress="95"></div></div>
+            <div class="skill-bar__label"><span>Proficiency</span><span>95%</span></div>
+            <div class="skill-tools"><span class="skill-tool">User Research</span><span class="skill-tool">Wireframing</span><span class="skill-tool">Prototyping</span><span class="skill-tool">Design Systems</span></div>
+          </div>
+          <div class="skill-card">
+            <div class="skill-icon">🖼️</div>
+            <div class="skill-name">Figma</div>
+            <div class="skill-category">Design Tool</div>
+            <div class="skill-bar"><div class="skill-bar__fill" data-progress="96"></div></div>
+            <div class="skill-bar__label"><span>Proficiency</span><span>96%</span></div>
+          </div>
+          <div class="skill-card">
+            <div class="skill-icon">🌐</div>
+            <div class="skill-name">HTML / CSS</div>
+            <div class="skill-category">Web Technology</div>
+            <div class="skill-bar"><div class="skill-bar__fill" data-progress="92"></div></div>
+            <div class="skill-bar__label"><span>Proficiency</span><span>92%</span></div>
+          </div>
+          <div class="skill-card">
+            <div class="skill-icon">⚡</div>
+            <div class="skill-name">JavaScript</div>
+            <div class="skill-category">Web Technology</div>
+            <div class="skill-bar"><div class="skill-bar__fill" data-progress="82"></div></div>
+            <div class="skill-bar__label"><span>Proficiency</span><span>82%</span></div>
+          </div>
+
+          <div class="skill-card">
+            <div class="skill-icon">🎭</div>
+            <div class="skill-name">GSAP</div>
+            <div class="skill-category">Animation Library</div>
+            <div class="skill-bar"><div class="skill-bar__fill" data-progress="85"></div></div>
+            <div class="skill-bar__label"><span>Proficiency</span><span>85%</span></div>
+          </div>
+          <div class="skill-card">
+            <div class="skill-icon">📱</div>
+            <div class="skill-name">Responsive Design</div>
+            <div class="skill-category">Web Standard</div>
+            <div class="skill-bar"><div class="skill-bar__fill" data-progress="94"></div></div>
+            <div class="skill-bar__label"><span>Proficiency</span><span>94%</span></div>
+          </div>
+          <div class="skill-card">
+            <div class="skill-icon">🌐</div>
+            <div class="skill-name">WordPress</div>
+            <div class="skill-category">CMS Platform</div>
+            <div class="skill-bar"><div class="skill-bar__fill" data-progress="88"></div></div>
+            <div class="skill-bar__label"><span>Proficiency</span><span>88%</span></div>
+          </div>
+          <div class="skill-card">
+            <div class="skill-icon">🤖</div>
+            <div class="skill-name">AI Web Design</div>
+            <div class="skill-category">AI-Assisted Design</div>
+            <div class="skill-bar"><div class="skill-bar__fill" data-progress="91"></div></div>
+            <div class="skill-bar__label"><span>Proficiency</span><span>91%</span></div>
+          </div>
+          <div class="skill-card">
+            <div class="skill-icon">💻</div>
+            <div class="skill-name">VS Code</div>
+            <div class="skill-category">Code Editor</div>
+            <div class="skill-bar"><div class="skill-bar__fill" data-progress="93"></div></div>
+            <div class="skill-bar__label"><span>Proficiency</span><span>93%</span></div>
+          </div>
+          <div class="skill-card">
+            <div class="skill-icon">⚡</div>
+            <div class="skill-name">Antigravity</div>
+            <div class="skill-category">AI Coding Assistant</div>
+            <div class="skill-bar"><div class="skill-bar__fill" data-progress="89"></div></div>
+            <div class="skill-bar__label"><span>Proficiency</span><span>89%</span></div>
+          </div>
+          <div class="skill-card">
+            <div class="skill-icon">🧠</div>
+            <div class="skill-name">Claude Code</div>
+            <div class="skill-category">AI Coding Assistant</div>
+            <div class="skill-bar"><div class="skill-bar__fill" data-progress="90"></div></div>
+            <div class="skill-bar__label"><span>Proficiency</span><span>90%</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MOTION PANEL -->
+      <div class="skills-panel" id="panel-motion" role="tabpanel">
+        <div class="skills-grid" data-stagger="0.07">
+          <div class="skill-card skill-card--motion skill-card--featured">
+            <div class="skill-icon">🎬</div>
+            <div class="skill-name">After Effects</div>
+            <div class="skill-category">Motion Graphics</div>
+            <div class="skill-bar"><div class="skill-bar__fill" data-progress="97" style="background:linear-gradient(90deg,var(--accent2),#ff9a5c);"></div></div>
+            <div class="skill-bar__label"><span>Proficiency</span><span>97%</span></div>
+            <div class="skill-tools"><span class="skill-tool">Expressions</span><span class="skill-tool">3D Layers</span><span class="skill-tool">Plugins</span><span class="skill-tool">Compositing</span></div>
+          </div>
+          <div class="skill-card skill-card--motion">
+            <div class="skill-icon">🎞️</div>
+            <div class="skill-name">Premiere Pro</div>
+            <div class="skill-category">Video Editing</div>
+            <div class="skill-bar"><div class="skill-bar__fill" data-progress="90" style="background:linear-gradient(90deg,var(--accent2),#ff9a5c);"></div></div>
+            <div class="skill-bar__label"><span>Proficiency</span><span>90%</span></div>
+          </div>
+          <div class="skill-card skill-card--motion">
+            <div class="skill-icon">🔮</div>
+            <div class="skill-name">Cinema 4D</div>
+            <div class="skill-category">3D Animation</div>
+            <div class="skill-bar"><div class="skill-bar__fill" data-progress="75" style="background:linear-gradient(90deg,var(--accent2),#ff9a5c);"></div></div>
+            <div class="skill-bar__label"><span>Proficiency</span><span>75%</span></div>
+          </div>
+          <div class="skill-card skill-card--motion">
+            <div class="skill-icon">🖌️</div>
+            <div class="skill-name">Adobe Photoshop</div>
+            <div class="skill-category">Image Editing</div>
+            <div class="skill-bar"><div class="skill-bar__fill" data-progress="90" style="background:linear-gradient(90deg,var(--accent2),#ff9a5c);"></div></div>
+            <div class="skill-bar__label"><span>Proficiency</span><span>90%</span></div>
+          </div>
+          <div class="skill-card skill-card--motion">
+            <div class="skill-icon">🎵</div>
+            <div class="skill-name">Sound Design</div>
+            <div class="skill-category">Audio</div>
+            <div class="skill-bar"><div class="skill-bar__fill" data-progress="70" style="background:linear-gradient(90deg,var(--accent2),#ff9a5c);"></div></div>
+            <div class="skill-bar__label"><span>Proficiency</span><span>70%</span></div>
+          </div>
+          <div class="skill-card skill-card--motion">
+            <div class="skill-icon">🎨</div>
+            <div class="skill-name">Color Grading</div>
+            <div class="skill-category">Post-Production</div>
+            <div class="skill-bar"><div class="skill-bar__fill" data-progress="88" style="background:linear-gradient(90deg,var(--accent2),#ff9a5c);"></div></div>
+            <div class="skill-bar__label"><span>Proficiency</span><span>88%</span></div>
+          </div>
+          <div class="skill-card skill-card--motion">
+            <div class="skill-icon">📐</div>
+            <div class="skill-name">Adobe Illustrator</div>
+            <div class="skill-category">Vector Design</div>
+            <div class="skill-bar"><div class="skill-bar__fill" data-progress="86" style="background:linear-gradient(90deg,var(--accent2),#ff9a5c);"></div></div>
+            <div class="skill-bar__label"><span>Proficiency</span><span>86%</span></div>
+          </div>
+          <div class="skill-card skill-card--motion">
+            <div class="skill-icon">🎬</div>
+            <div class="skill-name">AI Creator</div>
+            <div class="skill-category">AI Video & Motion</div>
+            <div class="skill-bar"><div class="skill-bar__fill" data-progress="88" style="background:linear-gradient(90deg,var(--accent2),#ff9a5c);"></div></div>
+            <div class="skill-bar__label"><span>Proficiency</span><span>88%</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ALL PANEL -->
+      <div class="skills-panel" id="panel-all" role="tabpanel">
+        <div class="skills-grid" data-stagger="0.05">
+          <div class="skill-card skill-card--featured"><div class="skill-icon">🎨</div><div class="skill-name">UI / UX Design</div><div class="skill-category">Core Discipline</div><div class="skill-bar"><div class="skill-bar__fill" data-progress="95"></div></div><div class="skill-bar__label"><span>Proficiency</span><span>95%</span></div></div>
+          <div class="skill-card skill-card--motion skill-card--featured"><div class="skill-icon">🎬</div><div class="skill-name">After Effects</div><div class="skill-category">Motion Graphics</div><div class="skill-bar"><div class="skill-bar__fill" data-progress="97" style="background:linear-gradient(90deg,var(--accent2),#ff9a5c);"></div></div><div class="skill-bar__label"><span>Proficiency</span><span>97%</span></div></div>
+          <div class="skill-card"><div class="skill-icon">🖼️</div><div class="skill-name">Figma</div><div class="skill-category">Design Tool</div><div class="skill-bar"><div class="skill-bar__fill" data-progress="96"></div></div><div class="skill-bar__label"><span></span><span>96%</span></div></div>
+          <div class="skill-card skill-card--motion"><div class="skill-icon">🎞️</div><div class="skill-name">Premiere Pro</div><div class="skill-category">Video</div><div class="skill-bar"><div class="skill-bar__fill" data-progress="90" style="background:linear-gradient(90deg,var(--accent2),#ff9a5c);"></div></div><div class="skill-bar__label"><span></span><span>90%</span></div></div>
+          <div class="skill-card"><div class="skill-icon">🌐</div><div class="skill-name">HTML / CSS</div><div class="skill-category">Web Technology</div><div class="skill-bar"><div class="skill-bar__fill" data-progress="92"></div></div><div class="skill-bar__label"><span></span><span>92%</span></div></div>
+          <div class="skill-card skill-card--motion"><div class="skill-icon">🔮</div><div class="skill-name">Cinema 4D</div><div class="skill-category">3D Animation</div><div class="skill-bar"><div class="skill-bar__fill" data-progress="75" style="background:linear-gradient(90deg,var(--accent2),#ff9a5c);"></div></div><div class="skill-bar__label"><span></span><span>75%</span></div></div>
+          <div class="skill-card"><div class="skill-icon">⚡</div><div class="skill-name">JavaScript</div><div class="skill-category">Web Technology</div><div class="skill-bar"><div class="skill-bar__fill" data-progress="82"></div></div><div class="skill-bar__label"><span></span><span>82%</span></div></div>
+          <div class="skill-card skill-card--motion"><div class="skill-icon">🖌️</div><div class="skill-name">Adobe Photoshop</div><div class="skill-category">Image Editing</div><div class="skill-bar"><div class="skill-bar__fill" data-progress="90" style="background:linear-gradient(90deg,var(--accent2),#ff9a5c);"></div></div><div class="skill-bar__label"><span></span><span>90%</span></div></div>
+          <div class="skill-card skill-card--motion"><div class="skill-icon">📐</div><div class="skill-name">Adobe Illustrator</div><div class="skill-category">Vector Design</div><div class="skill-bar"><div class="skill-bar__fill" data-progress="86" style="background:linear-gradient(90deg,var(--accent2),#ff9a5c);"></div></div><div class="skill-bar__label"><span></span><span>86%</span></div></div>
+          <div class="skill-card"><div class="skill-icon">🌐</div><div class="skill-name">WordPress</div><div class="skill-category">CMS Platform</div><div class="skill-bar"><div class="skill-bar__fill" data-progress="88"></div></div><div class="skill-bar__label"><span></span><span>88%</span></div></div>
+          <div class="skill-card"><div class="skill-icon">🤖</div><div class="skill-name">AI Web Design</div><div class="skill-category">AI-Assisted Design</div><div class="skill-bar"><div class="skill-bar__fill" data-progress="91"></div></div><div class="skill-bar__label"><span></span><span>91%</span></div></div>
+          <div class="skill-card"><div class="skill-icon">💻</div><div class="skill-name">VS Code</div><div class="skill-category">Code Editor</div><div class="skill-bar"><div class="skill-bar__fill" data-progress="93"></div></div><div class="skill-bar__label"><span></span><span>93%</span></div></div>
+          <div class="skill-card"><div class="skill-icon">⚡</div><div class="skill-name">Antigravity</div><div class="skill-category">AI Coding Assistant</div><div class="skill-bar"><div class="skill-bar__fill" data-progress="89"></div></div><div class="skill-bar__label"><span></span><span>89%</span></div></div>
+          <div class="skill-card skill-card--motion"><div class="skill-icon">🎬</div><div class="skill-name">AI Creator</div><div class="skill-category">AI Video & Motion</div><div class="skill-bar"><div class="skill-bar__fill" data-progress="88" style="background:linear-gradient(90deg,var(--accent2),#ff9a5c);"></div></div><div class="skill-bar__label"><span></span><span>88%</span></div></div>
+          <div class="skill-card"><div class="skill-icon">🧠</div><div class="skill-name">Claude Code</div><div class="skill-category">AI Coding Assistant</div><div class="skill-bar"><div class="skill-bar__fill" data-progress="90"></div></div><div class="skill-bar__label"><span></span><span>90%</span></div></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EXPERTISE LIST -->
+  <section class="section expertise">
+    <div class="container">
+      <span class="section-label" data-reveal="fade">Core Expertise</span>
+      <h2 class="heading-1" style="margin-bottom:0;" data-reveal="up">What I'm great at.</h2>
+      <div class="expertise-list" data-stagger="0.08">
+        <div class="exp-item"><div class="exp-name">Brand Identity Design</div><div class="exp-bar-wrap"><div class="exp-bar" data-progress="93"></div></div><div class="exp-pct">93%</div></div>
+        <div class="exp-item"><div class="exp-name">Motion Graphics</div><div class="exp-bar-wrap"><div class="exp-bar" data-progress="97"></div></div><div class="exp-pct">97%</div></div>
+        <div class="exp-item"><div class="exp-name">Web & UI Design</div><div class="exp-bar-wrap"><div class="exp-bar" data-progress="95"></div></div><div class="exp-pct">95%</div></div>
+        <div class="exp-item"><div class="exp-name">Interactive Animation</div><div class="exp-bar-wrap"><div class="exp-bar" data-progress="88"></div></div><div class="exp-pct">88%</div></div>
+        <div class="exp-item"><div class="exp-name">Video Production</div><div class="exp-bar-wrap"><div class="exp-bar" data-progress="85"></div></div><div class="exp-pct">85%</div></div>
+        <div class="exp-item"><div class="exp-name">3D Design (C4D)</div><div class="exp-bar-wrap"><div class="exp-bar" data-progress="75"></div></div><div class="exp-pct">75%</div></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer"><div class="container"><div class="footer__inner">
+    <div class="footer__left"><strong>Abhisek Visuals</strong><br/><span>© 2025 All rights reserved.</span></div>
+    <div class="footer__socials">
+      <a href="https://linkedin.com" class="footer__social-link" aria-label="LinkedIn" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+      <a href="https://facebook.com" class="footer__social-link" aria-label="Facebook" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+      <a href="https://instagram.com" class="footer__social-link" aria-label="Instagram" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+      <a href="https://youtube.com" class="footer__social-link" aria-label="YouTube" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.41 19c1.71.46 8.59.46 8.59.46s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon fill="white" points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg></a>
+    </div>
+  </div></div></footer>
+  <button class="back-to-top" id="back-to-top" aria-label="Back to top"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <script src="js/theme.js"></script><script src="js/nav.js"></script><script src="js/cursor.js"></script><script src="js/animations.js"></script>
+  <script>
+    // Tab switching
+    const tabs = document.querySelectorAll('.tab-btn');
+    const panels = document.querySelectorAll('.skills-panel');
+    tabs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+        panels.forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected','true');
+        const panel = document.getElementById('panel-' + btn.dataset.tab);
+        panel.classList.add('active');
+        // Animate bars
+        panel.querySelectorAll('.skill-bar__fill[data-progress]').forEach(bar => {
+          bar.style.width = bar.getAttribute('data-progress') + '%';
+        });
+        panel.querySelectorAll('.exp-bar[data-progress]').forEach(bar => {
+          bar.style.width = bar.getAttribute('data-progress') + '%';
+        });
+      });
+    });
+    // Trigger first panel bars via IntersectionObserver
+    const barObserver = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const p = e.target.getAttribute('data-progress');
+          if (p) e.target.style.width = p + '%';
+          barObserver.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    document.querySelectorAll('.skill-bar__fill, .exp-bar').forEach(el => barObserver.observe(el));
+
+    const btt = document.getElementById('back-to-top');
+    window.addEventListener('scroll', () => btt.classList.toggle('visible', window.scrollY > 400), { passive: true });
+    btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  </script>
+</body>
+</html>

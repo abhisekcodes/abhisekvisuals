@@ -1,0 +1,155 @@
+/* ============================================================
+   ANIMATIONS — animations.css
+   ============================================================ */
+
+/* --- Keyframes --- */
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.88); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-60px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(60px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33%       { transform: translateY(-12px) rotate(1.5deg); }
+  66%       { transform: translateY(-6px) rotate(-1deg); }
+}
+
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-20px); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(108, 99, 255, 0.3); }
+  50%       { box-shadow: 0 0 60px rgba(108, 99, 255, 0.7), 0 0 100px rgba(255, 101, 132, 0.2); }
+}
+
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes ping {
+  0%    { transform: scale(1); opacity: 0.8; }
+  75%, 100% { transform: scale(2); opacity: 0; }
+}
+
+@keyframes blobMorph {
+  0%   { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  25%  { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+  50%  { border-radius: 50% 50% 30% 70% / 30% 70% 50% 40%; }
+  75%  { border-radius: 70% 30% 60% 40% / 40% 50% 60% 30%; }
+  100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes drawLine {
+  from { stroke-dashoffset: 1000; }
+  to   { stroke-dashoffset: 0; }
+}
+
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-8px); }
+  40%       { transform: translateX(8px); }
+  60%       { transform: translateX(-5px); }
+  80%       { transform: translateX(5px); }
+}
+
+@keyframes checkDraw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes glitchX {
+  0%, 100% { clip-path: inset(50% 0 50% 0); transform: translateX(0); }
+  10%       { clip-path: inset(10% 0 85% 0); transform: translateX(-4px); }
+  30%       { clip-path: inset(70% 0 10% 0); transform: translateX(4px); }
+  50%       { clip-path: inset(30% 0 60% 0); transform: translateX(-2px); }
+  70%       { clip-path: inset(80% 0 5% 0); transform: translateX(2px); }
+}
+
+/* --- Utility Classes --- */
+
+.anim-fade-up    { animation: fadeUp var(--dur-slow) var(--ease-out) both; }
+.anim-fade-in    { animation: fadeIn var(--dur-slow) var(--ease-out) both; }
+.anim-scale-in   { animation: scaleIn var(--dur-slow) var(--ease-out) both; }
+.anim-float      { animation: float 6s ease-in-out infinite; }
+.anim-float-slow { animation: floatSlow 8s ease-in-out infinite; }
+.anim-glow       { animation: glow 3s ease-in-out infinite; }
+.anim-spin       { animation: spin 20s linear infinite; }
+.anim-pulse      { animation: pulse 2s ease-in-out infinite; }
+.anim-gradient   {
+  background-size: 200% 200%;
+  animation: gradientShift 6s ease infinite;
+}
+
+/* GSAP will set opacity/transform via JS — these are visible by default as a safety fallback */
+[data-reveal], [data-stagger] > * {
+  will-change: transform, opacity;
+}
+
+/* Scroll-reveal base (GSAP will handle reveal) */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity var(--dur-slow) var(--ease-out),
+              transform var(--dur-slow) var(--ease-out);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger delays */
+.stagger-1  { animation-delay: 0.05s; }
+.stagger-2  { animation-delay: 0.10s; }
+.stagger-3  { animation-delay: 0.15s; }
+.stagger-4  { animation-delay: 0.20s; }
+.stagger-5  { animation-delay: 0.25s; }
+.stagger-6  { animation-delay: 0.30s; }
